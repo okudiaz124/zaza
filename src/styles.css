@@ -108,3 +108,4 @@ dd { margin-top: 4px; font-weight: 730; font-size: 21px; font-variant-numeric: t
   dd { font-size: 18px; }
   .footer-row { align-items: flex-start; flex-direction: column; }
 }
+.gps-links { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px 18px; }

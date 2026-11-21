@@ -5,6 +5,9 @@ import { addPosition, sample } from './walk.js';
 
 const get = id => document.getElementById(id);
 const storeKey = 'pawlink.walks.v1';
+const params = new URLSearchParams(location.search);
+const bookingId = params.get('reserva');
+const appStoreKey = 'pawlink.app.v1';
 const view = Object.fromEntries([
   'map', 'map-title', 'map-description', 'map-status', 'map-message', 'fit-route',
   'distance', 'duration', 'point-count', 'pet-name', 'walk-status', 'walk-help', 'start',
@@ -204,7 +207,7 @@ function startWalk() {
     return;
   }
   const walk = model.draft || {
-    id: crypto.randomUUID(), name, startedAt: Date.now(), duration: 0, meters: 0, points: [], segment: 0
+    id: crypto.randomUUID(), name, bookingId, startedAt: Date.now(), duration: 0, meters: 0, points: [], segment: 0
   };
   if (walk.points.length) walk.segment += 1;
   model.draft = walk;
@@ -231,6 +234,21 @@ function pauseWalk() {
   view.start.focus();
 }
 
+function completeBooking(id) {
+  if (!id) return;
+  try {
+    const app = JSON.parse(localStorage.getItem(appStoreKey));
+    if (!app?.ownerData) return;
+    for (const account of Object.values(app.ownerData)) {
+      const booking = account.bookings.find(item => item.id === id);
+      if (booking?.status === 'confirmed') booking.status = 'completed';
+    }
+    localStorage.setItem(appStoreKey, JSON.stringify(app));
+  } catch {
+    // The walk itself is already saved in the GPS history.
+  }
+}
+
 function finishWalk() {
   if (!model.draft?.points.length) return;
   stopWatch();
@@ -242,6 +260,7 @@ function finishWalk() {
     return;
   }
   model = next;
+  completeBooking(draft.bookingId);
   showWalk(draft);
   renderHistory();
   notice('Paseo guardado en este navegador.');
@@ -274,6 +293,7 @@ window.addEventListener('pagehide', () => {
   save();
   renderControls();
 });
+if (params.get('mascota') && !model.draft) view['pet-name'].value = params.get('mascota').slice(0, 48);
 if (model.draft) {
   gpsState = 'paused';
   map.draw(model.draft.points);

@@ -1,15 +1,21 @@
-# PawLink · GPS de paseos
+# PawLink
 
-Aplicación web adaptable basada en «Mis Paseos» de PawLink para escritorio y móvil. Registra el recorrido del dispositivo con geolocalización, muestra distancia y duración, permite pausar y continuar, y conserva el historial en el navegador. Incluye un recorrido de ejemplo de Miraflores, Lima, separado del historial real.
+Aplicación web adaptable de PawLink. Incluye la página de inicio, registro e inicio de sesión, los paneles de dueño, paseador y especialista, perfiles profesionales, búsqueda y reserva de paseos, gestión de mascotas, agenda de especialistas y seguimiento GPS.
 
-## Desarrollo local
+## Abrir el proyecto
 
-Con Node.js 24, ejecuta `npm ci` y `npm run dev`. Abre la dirección que muestra Vite. `npm run build` genera la aplicación en `dist/`.
+Usa Node.js 24. Ejecuta `npm ci` y `npm run dev`. `npm run build` genera el sitio en `dist/`. Puedes probar la versión de producción con `npm run preview`.
 
-El GPS requiere HTTPS o localhost y permiso de ubicación. Para registrar el recorrido, mantén la pestaña visible y la pantalla activa. Los paseos se guardan en el navegador del dispositivo que los registró. El mapa base usa Leaflet y OpenStreetMap.
+En **Iniciar Sesión**, expande **Probar con una cuenta de demostración** para elegir un perfil. También puedes registrar una cuenta local. Los datos, los perfiles creados, las reservas y las consultas se guardan en el navegador y pueden probarse cambiando de cuenta en ese mismo navegador. Las reservas de prueba no generan cobros. La aplicación estática no ofrece pagos, videollamadas, verificación de identidad ni sincronización entre dispositivos.
+
+## GPS
+
+**Mis Paseos → Empezar** abre el mapa desde la reserva. El rastreo requiere HTTPS o localhost y permiso de ubicación. Mantén la pestaña abierta mientras dure el paseo. El mapa utiliza Leaflet y OpenStreetMap. La ruta y las métricas se guardan en el historial del dispositivo.
+
+## Diseño
+
+El archivo de referencia es [PawLink Mockups App Web](https://www.figma.com/design/f5RnDupNFLOq7GCYG6GqB2/Pawlink-Mockups-App-Web). La aplicación usa las referencias de escritorio y de App v2 en móvil. Se compararon las referencias visuales de inicio, nosotros, inicio de sesión, búsqueda, panel del dueño y reservas. Las demás pantallas se implementaron con la estructura extraída del mismo archivo y los componentes de esas referencias.
 
 ## Azure Static Web Apps
 
-Crea una Static Web App con el plan Free y «Other» como origen. En Azure, copia el token desde **Manage deployment token**. En GitHub, guarda el token en **Settings → Secrets and variables → Actions** con el nombre `AZURE_STATIC_WEB_APPS_API_TOKEN`. Ejecuta **Actions → Azure Static Web Apps → Run workflow** en la rama `main`. Los siguientes cambios en `main` se publicarán automáticamente.
-
-La aplicación usa el recurso estático y no requiere una API, base de datos ni clave de mapas.
+El proyecto incluye un flujo de GitHub Actions. Para automatizar despliegues, configura el token de la Static Web App como secreto `AZURE_STATIC_WEB_APPS_API_TOKEN` y ejecuta **Actions → Azure Static Web Apps → Run workflow** en `main`. También puedes publicar el resultado de `npm run build` directamente en un recurso existente con `swa deploy ./dist --env production`.
