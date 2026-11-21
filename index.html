@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="es-PE">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f9fafb">
+    <meta name="description" content="Registra y consulta los recorridos de tus paseos con PawLink.">
+    <link rel="icon" href="/figma/logo-desktop.svg" type="image/svg+xml">
+    <title>Mis Paseos · PawLink</title>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="shell header-row">
+        <a class="brand" href="#" aria-label="PawLink, inicio">
+          <picture class="brand-mark">
+            <source media="(max-width: 650px)" srcset="/figma/logo-mobile.svg">
+            <img src="/figma/logo-desktop.svg" alt="">
+          </picture>
+          PawLink
+        </a>
+        <a class="header-link" href="#historial">Historial de paseos</a>
+      </div>
+    </header>
+
+    <main class="shell">
+      <div class="intro">
+        <p class="section-label"><img src="/figma/calendar-tab.svg" alt=""> Seguimiento GPS</p>
+        <h1>Mis Paseos</h1>
+        <p>Registra los paseos de tu mascota y vuelve a ver sus recorridos.</p>
+      </div>
+
+      <div class="dashboard">
+        <section class="panel map-panel" aria-labelledby="map-title">
+          <div class="map-heading">
+            <div>
+              <h2 id="map-title">Mapa del paseo</h2>
+              <p id="map-description">La ruta se dibujará cuando empieces el paseo.</p>
+            </div>
+            <span class="badge" id="map-status">GPS inactivo</span>
+          </div>
+          <div class="map-stage">
+            <div id="map" role="region" aria-label="Mapa interactivo del recorrido"></div>
+            <button type="button" id="fit-route" class="map-button" disabled>
+              <img src="/figma/pin-desktop.svg" alt=""> Centrar ruta
+            </button>
+            <p class="map-message" id="map-message" hidden>Mapa base no disponible. La ruta y las métricas siguen visibles.</p>
+          </div>
+          <dl class="metrics">
+            <div><dt>Distancia</dt><dd id="distance">0 m</dd></div>
+            <div><dt>Duración</dt><dd id="duration">0:00</dd></div>
+            <div><dt>Puntos GPS</dt><dd id="point-count">0</dd></div>
+          </dl>
+        </section>
+
+        <aside class="walk-sidebar">
+          <section class="panel walk-panel" aria-labelledby="walk-title">
+            <h2 id="walk-title">Registrar paseo</h2>
+            <div class="pet-row">
+              <picture class="pet-avatar">
+                <source media="(max-width: 650px)" srcset="/figma/dog-mobile.svg">
+                <img src="/figma/dog-desktop.svg" alt="">
+              </picture>
+              <div class="pet-field">
+                <label for="pet-name">Mascota</label>
+                <input id="pet-name" name="pet" type="text" value="Bella" maxlength="48" autocomplete="off">
+              </div>
+              <span class="badge walk-badge" id="walk-status">LISTO</span>
+            </div>
+            <p class="walk-help" id="walk-help">Permite el acceso a tu ubicación y mantén la página abierta durante el paseo.</p>
+            <div class="walk-actions">
+              <button class="button primary" type="button" id="start">Empezar</button>
+              <button class="button secondary" type="button" id="pause" hidden>Pausar</button>
+              <button class="button primary" type="button" id="finish" hidden>Finalizar y guardar</button>
+              <button class="button secondary" type="button" id="cancel" hidden>Cancelar</button>
+            </div>
+            <p class="notice" id="notice" role="status" hidden></p>
+          </section>
+
+          <section class="panel history-panel" id="historial" aria-labelledby="history-title">
+            <div class="history-heading">
+              <h2 id="history-title">Historial de paseos</h2>
+              <span class="history-count" id="history-count">0</span>
+            </div>
+            <p class="empty-history" id="empty-history">Tus paseos guardados aparecerán aquí.</p>
+            <ul class="history-list" id="walk-list"></ul>
+            <button class="demo-button" type="button" id="show-demo">Ver un recorrido de ejemplo</button>
+          </section>
+        </aside>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="shell footer-row"><span>PawLink</span><p>Los recorridos se guardan en este navegador.</p></div>
+    </footer>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
