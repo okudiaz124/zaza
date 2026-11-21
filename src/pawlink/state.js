@@ -105,7 +105,7 @@ export function openWalkList() {
   const p = person('walker');
   const items = Object.values(state.ownerData).flatMap(data => data.bookings).filter(item => item.providerId === p.id
     || (p.id === 'demo-walker' && !item.providerId && item.provider === 'Frank Lopez'));
-  if (p.id === 'demo-walker') items.push(...accountData(p).bookings);
+  if (p.id === 'demo-walker') items.unshift(...accountData(p).bookings);
   const unique = new Map(items.map(item => [item.id,item]));
   const gpsWalks = read('pawlink.walks.v1', {}).walks || [];
   return [...unique.values()].map(item => gpsWalks.some(walk => walk.bookingId === item.id)

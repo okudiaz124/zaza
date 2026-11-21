@@ -214,6 +214,14 @@ const forms = {
     const walker = walkerFor(draft?.walker);
     if (!draft || !walker || draft.ownerId !== person().id) throw new Error('Vuelve a completar los detalles del paseo.');
     ensureFuture(draft.date,draft.time);
+    if (!availableSlot(walker,draft.date,draft.time,draft.minutes)) throw new Error('El paseador no tiene disponibilidad en ese horario.');
+    const minute = time => Number(time.slice(0,2)) * 60 + Number(time.slice(3));
+    const start = minute(draft.time);
+    const overlaps = Object.values(state.ownerData).flatMap(data => data.bookings).some(item =>
+      item.date === draft.date && item.status === 'confirmed'
+      && (walker.ownerId ? item.providerId === walker.ownerId : item.provider === walker.name)
+      && start < minute(item.time) + item.minutes && minute(item.time) < start + draft.minutes);
+    if (overlaps) throw new Error('Ese horario ya está reservado. Edita los detalles y elige otra hora.');
     const booking = bookingRecord(walker,draft,petFor(draft.pet)?.name || draft.pet);
     accountData().bookings.unshift(booking);
     state.lastBooking = booking.id;
